@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://lashniethnicwear.netlify.app/sitemap.xml
