@@ -7,27 +7,29 @@
 var NEW_ARRIVAL_DAYS = 5;
 var productByCode = {};
 
-/* Build a fast code lookup and fill in optional dates/order metadata. */
+/* Build a fast code lookup and validate each permanent timestamp. */
 function registerProducts() {
   productByCode = {};
   products.forEach(function (product, index) {
     if (productByCode[product.code]) { throw new Error('Duplicate product code: ' + product.code); }
-    product.addedAt = product.addedAt || new Date().toISOString().slice(0, 10);
+    if (!product.addedAt || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(product.addedAt) || Number.isNaN(Date.parse(product.addedAt))) {
+      throw new Error('Invalid addedAt timestamp for ' + product.code);
+    }
     product._order = index;
     productByCode[product.code] = product;
   });
 }
 
-/* Newest first; array order breaks ties when two products share a date. */
+/* Newest timestamp first; later catalogue entries win exact timestamp ties. */
 function sortedProducts() {
   return products.slice().sort(function (a, b) {
     var byDate = Date.parse(b.addedAt) - Date.parse(a.addedAt);
-    return byDate || a._order - b._order;
+    return byDate || b._order - a._order;
   });
 }
 
 function isRecentlyAdded(product) {
-  var days = Math.floor((Date.now() - Date.parse(product.addedAt + 'T00:00:00')) / 86400000);
+  var days = Math.floor((Date.now() - Date.parse(product.addedAt)) / 86400000);
   return days >= 0 && days <= NEW_ARRIVAL_DAYS;
 }
 
@@ -209,25 +211,36 @@ function copyModalText() {
   });
 }
 
-/* Open the tab in the tap gesture, but navigate only after the copy settles. */
-function openDmTab(dmTab) {
-  if (dmTab) {
-    try { dmTab.opener = null; dmTab.location.replace(dmLink); return; }
-    catch (e) {}
+/* Open the real DM URL after copying. Never create an about:blank tab.
+ * The 'noopener' window feature makes window.open return null, so detach the
+ * opener manually and use the return value to detect a blocked pop-up. */
+function openDmTab(text) {
+  var tab = null;
+  try { tab = window.open(dmLink, '_blank'); } catch (e) { tab = null; }
+  if (tab && !tab.closed) {
+    try { tab.opener = null; } catch (e) {}
+  } else {
+    // Pop-up blocked: offer a real anchor the visitor can activate themselves.
+    openCopyModal(text || '');
+    document.getElementById('copyModalOpenDm').focus();
   }
-  window.open(dmLink, '_blank', 'noopener');
 }
 
 function enquireNow(event, code) {
   event.preventDefault();
   event.stopPropagation();
-  if (event.currentTarget.disabled) { return; }
+  var button = event.currentTarget;
+  if (button.disabled || button.dataset.pending === 'true') { return; }
   var text = enquiryText(code);
-  var dmTab = window.open('about:blank', '_blank');
+  button.dataset.pending = 'true';
   copyMessage(text).then(function (ok) {
-    if (ok) { showToast('Product details copied. Paste in Instagram DM ✨'); }
-    else { openCopyModal(text); }
-    openDmTab(dmTab);
+    button.dataset.pending = 'false';
+    if (ok) {
+      showToast('Product details copied. Paste in Instagram DM ✨');
+      openDmTab(text);
+    } else {
+      openCopyModal(text);
+    }
   });
 }
 
@@ -283,14 +296,44 @@ function syncAvailability() {
 /* Static modal controls live in index.html; generated card controls are wired above. */
 function initModalEvents() {
   document.getElementById('copyModalCopy').onclick = copyModalText;
-  document.getElementById('copyModalClose').onclick = closeCopyModal;
+  // A real link works even when a scripted pop-up would be blocked.
+  document.getElementById('copyModalOpenDm').addEventListener('click', closeCopyModal);
   copyModal.addEventListener('click', function (event) { if (event.target === copyModal) { closeCopyModal(); } });
   document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && !copyModal.hidden) { closeCopyModal(); } });
+}
+
+/* The mobile menu expands inside the sticky nav so it never covers the page. */
+function setMobileMenu(open) {
+  var toggle = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  if (!toggle || !menu) { return; }
+  menu.hidden = !open;
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+}
+
+function initMobileMenu() {
+  var toggle = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  if (!toggle || !menu) { return; }
+
+  toggle.onclick = function () { setMobileMenu(menu.hidden); };
+  menu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () { setMobileMenu(false); });
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && !menu.hidden) { setMobileMenu(false); toggle.focus(); }
+  });
+  document.addEventListener('click', function (event) {
+    if (!menu.hidden && !menu.contains(event.target) && !toggle.contains(event.target)) { setMobileMenu(false); }
+  });
+  window.addEventListener('resize', function () { if (window.innerWidth > 900) { setMobileMenu(false); } });
 }
 
 function init() {
   renderCatalogue();
   initModalEvents();
+  initMobileMenu();
 }
 
 /* Scripts use defer in index.html, so the DOM is ready when this runs. */

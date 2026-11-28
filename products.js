@@ -2,8 +2,9 @@
  * LASHNI product catalogue - the single source of truth.
  *
  * To add a suit, append one object with a unique `code` and its details.
- * `addedAt` is optional (YYYY-MM-DD); omit it to use today's date.
- * The newest products always render first in New Arrivals and drive the hero.
+ * `addedAt` is required and must be a permanent ISO timestamp with date, time
+ * and timezone offset. The newest timestamp always renders first in New
+ * Arrivals and drives the hero; later entries win exact timestamp ties.
  *
  * Availability is edited manually. Only "Sold Out" disables Enquire Now;
  * other values are shown as-is without inventing stock claims.
@@ -20,7 +21,7 @@ var products = [
     sub: 'Rich maroon velvet suit set with detailed multicolour embroidery and matching dupatta. Perfect for festive occasions and functions.',
     post: 'https://www.instagram.com/p/DgPtv4HSWiy/',
     availability: 'Check Availability',
-    addedAt: '2026-11-27',
+    addedAt: '2026-11-27T18:45:00+05:30',
     message: "Hi LASHNI, I'm interested in Royal Maroon Velvet Suit Set - Code LSH-MV05. Please confirm current price and availability."
   },
   {
@@ -34,7 +35,7 @@ var products = [
     sub: 'Complete unstitched suit set. Kurta fabric, bottom and dupatta included.',
     post: 'https://www.instagram.com/p/DgH2I9aS4P7/',
     availability: 'Check Availability',
-    addedAt: '2026-11-24',
+    addedAt: '2026-11-24T16:20:00+05:30',
     message: "Hi LASHNI, I'm interested in Rangoli Crush Suit Set - Code LSH-RC01. Please confirm current price and availability."
   },
   {
@@ -48,7 +49,7 @@ var products = [
     sub: 'Complete unstitched suit set with embroidery and matching bottom and dupatta.',
     post: 'https://www.instagram.com/p/DgH2k-9yfHM/',
     availability: 'Check Availability',
-    addedAt: '2026-11-22',
+    addedAt: '2026-11-22T11:10:00+05:30',
     message: "Hi LASHNI, I'm interested in Floral Embroidered Suit Set - Code LSH-FL02. Please confirm current price and availability."
   },
   {
@@ -62,7 +63,7 @@ var products = [
     sub: 'Elegant floral embroidery with contrast dupatta. Ask for current price and colour options.',
     post: 'https://www.instagram.com/p/DgMryIAS7rc/',
     availability: 'Check Availability',
-    addedAt: '2026-11-20',
+    addedAt: '2026-11-20T17:30:00+05:30',
     message: "Hi LASHNI, I'm interested in Olive Elegance Suit Set - Code LSH-OL04. Please confirm current price and availability."
   },
   {
@@ -76,7 +77,7 @@ var products = [
     sub: 'Floral neckline embroidery with coordinated dupatta. Message us for current price and availability.',
     post: 'https://www.instagram.com/p/DgKgKi0yguT/',
     availability: 'Check Availability',
-    addedAt: '2026-11-18',
+    addedAt: '2026-11-18T09:15:00+05:30',
     message: "Hi LASHNI, I'm interested in Pretty Pink Floral Suit - Code LSH-PK03. Please confirm current price and availability."
   }
 ];
