@@ -69,19 +69,20 @@ section{padding:70px 0}
 .card:hover img{transform:scale(1.035)}
 .card-body{padding:18px;display:flex;flex-direction:column;gap:9px;flex:1;min-height:485px}
 .code{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--wine)}
-.card h3{font-size:24px}
-.price{font-weight:850;color:var(--wine);font-size:19px}
+.card h3{font-size:24px;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+.price{font-weight:700;color:var(--wine);font-size:16px}
 .sub{color:var(--muted);font-size:14px}
 .status{display:inline-flex;width:max-content;background:var(--blush);color:var(--wine);font-size:12px;font-weight:800;padding:6px 9px;border-radius:999px}
 .status--available{background:#e8efe4;color:var(--green)}
 .status--limited{background:#f8ead7;color:#8a5d25}
 .status--sold{background:#eee5e8;color:var(--muted)}
 .new-badge{display:inline-flex;width:max-content;background:var(--gold);color:#fff;font-size:10px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border-radius:999px;box-shadow:0 2px 8px rgba(185,133,85,.22)}
-.card-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:auto}
+.card-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:auto;padding-top:10px}
+.card [data-view]{border-color:var(--line)}
 .card-actions .pill{width:100%;margin-top:0;font-family:inherit;line-height:inherit;cursor:pointer}
 .pill:disabled{opacity:.6;cursor:not-allowed;transform:none}
 .card-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.card-tools button{padding:7px 8px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font-family:inherit;font-size:12px;font-weight:750;cursor:pointer;transition:color .2s ease,border-color .2s ease,background .2s ease}
+.card-tools button{padding:7px 8px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);font-family:inherit;font-size:12px;font-weight:750;cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color .2s ease,border-color .2s ease,background .2s ease}
 .card-tools button:hover{color:var(--wine);border-color:var(--wine);background:rgba(123,31,58,.04)}
 .trust{margin:1px 0 0;color:var(--muted);font-size:11px;text-align:center}
 .order-note{margin:22px 0 0;max-width:860px;color:var(--muted);font-size:14px}
@@ -130,6 +131,8 @@ footer{background:#281016;color:#f8e9ec;padding:34px 0}
 .modal-card textarea{width:100%;min-height:110px;margin:12px 0;border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit;font-size:14px;resize:vertical;background:#fff;color:var(--ink)}
 .modal-actions{display:flex;gap:8px;flex-wrap:wrap}
 .modal-actions .pill{flex:1;min-width:120px}
+.card .card-body{gap:10px}
+.mobile-dm,.mobile-dm:hover{background:var(--cream);color:var(--wine);border:0;border-top:1px solid var(--line);border-radius:0;transform:none}
 
 /* Responsive layout */
 @media(max-width:900px){.links,.nav-dm{display:none} .menu-toggle{display:flex} .mobile-menu:not([hidden]){display:block;border-top:1px solid var(--line);background:rgba(255,249,244,.98)} .mobile-menu-inner{display:grid;gap:2px;padding:10px 0 14px} .mobile-menu a{padding:12px 14px;border-radius:12px;text-decoration:none;font-weight:650;color:var(--ink)} .mobile-menu a:hover{background:var(--blush);color:var(--wine)} .hero-grid,.about-grid,.contact-box{grid-template-columns:1fr} .hero{padding-top:34px} .hero-card{order:-1} .products{grid-template-columns:repeat(2,1fr)} .steps{grid-template-columns:repeat(2,1fr)} .section-head{align-items:start;flex-direction:column} .card-body{min-height:444px}}

@@ -75,8 +75,8 @@ function cardHtml(product) {
     '<span class="status" data-badge></span><span class="code">Code: ' + code + '</span>' +
     '<h3>' + product.name + '</h3><div class="price">' + product.price + '</div><div class="sub">' + product.sub + '</div>' +
     '<div class="card-actions">' +
-    '<a class="pill secondary ig-icon" data-view href="' + product.post + '" target="_blank" rel="noopener" aria-label="View Instagram post for ' + product.name + ', code ' + code + '">' + igSvg + 'View Instagram Post</a>' +
     '<button type="button" class="pill" data-enquire aria-label="Enquire about ' + product.name + ', code ' + code + '">Enquire Now</button>' +
+    '<a class="pill secondary ig-icon" data-view href="' + product.post + '" target="_blank" rel="noopener" aria-label="View Instagram post for ' + product.name + ', code ' + code + '">' + igSvg + 'View Instagram Post</a>' +
     '<div class="card-tools">' +
     '<button type="button" data-copy aria-label="Copy product code ' + code + '">Copy Product Code</button>' +
     '<button type="button" data-share aria-label="Share ' + product.name + ' details, code ' + code + '">Share Product</button>' +
